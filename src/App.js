@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Header from './componentes/Header';
 import Corpo from './componentes/Corpo';
 import './App.css';
@@ -25,6 +25,17 @@ import Car from "./componentes/Car";
 import BaseClass from "./componentes/BaseClass";
 import Globais from "./componentes/Globais";
 import Info from "./componentes/Info";
+import Pagina1 from "./componentes/Pagina1";
+import Pagina2 from "./componentes/Pagina2";
+import Tabela from "./componentes/Tabela";
+import Imc from "./componentes/Imc";
+import Imc2 from "./componentes/Imc2";
+import peso from "./componentes/Peso";
+import Altura from "./componentes/Altura";
+import CalcularIMC from "./componentes/CalcularIMC";
+import ResultadoIMC from "./componentes/ResultadoIMC";
+import Peso from "./componentes/Peso";
+
 
 
 
@@ -65,9 +76,45 @@ export default function App(){
    const gravarResumo=()=>{
       Globais.resumo=resumo;
    }
- const verResumo=()=>{
+    const verResumo=()=>{
     alert(Globais.resumo)
- }
+   }
+   const [Pagina,setPagina]= useState()
+
+   useEffect(
+      ()=>{
+         const url=window.location.href
+         const res = url.split('?')
+         setPagina(res[1])
+      }
+   )
+   const LinksPagina=(p)=>{
+   if(p==1){
+      window.open('http://localhost:3000?1','_self')
+   }else if(p==2){
+      window.open('http://localhost:3000?2','_self')
+   }
+}
+
+   const retornarPagina=()=>{
+   if(Pagina==1){
+      return <Pagina1/>
+   }else if(Pagina==2){
+      return <Pagina2/>
+
+   }else{
+      return( <div>
+      
+            <button onClick={()=>LinksPagina(1)}>Pagina 1</button>
+            <button onClick={()=>LinksPagina(2)}>Pagina 2</button>
+            </div>)
+   }
+
+}
+
+   const [peso,setPeso]=useState(0)
+   const [altura,setAltura]=useState(0)
+   const [resultado,setResultado]=useState(0)
       
  
 
@@ -155,7 +202,22 @@ export default function App(){
          <button onClick={()=>gravarResumo()}>Gravar resumo</button>
          <hr/>
          <button onClick={()=>verResumo()}>Ver resumo</button>
+         <hr/>
+         {retornarPagina()}
+         <hr/>
+        <Tabela/>
+        <hr/>
+        <Imc/>
+        <hr/>
+        <Peso p={peso} sp={setPeso}/>
+        <Altura a={altura} sa={setAltura}/>
+        <CalcularIMC p={peso} a={altura} sr={setResultado}/>
+        <ResultadoIMC r={resultado}/>
+        <Imc2/>
 
+        
+        
+  
         
 
 
@@ -271,7 +333,17 @@ export default function App(){
          const verResumo=()=>{alert(Globais.resumo)
          } e depois crimos dois buttom um pra gravar o resumo e o outro pra da o alert:<button onClick={()=>gravarResumo()}>Gravar resumo</button> e <button onClick={()=>verResumo()}>Ver resumo</button> .Dessa forma podemos ver que temos acesso as variáveis Globais da Globais.js
 
-         44:
+         44:Na aula 28 criamos dois componentes Pagina1.js e Pagina2.js pra simular duas pagins distintas no navedor,
+         importamos os componetes pagina 1 e pagina 2 pra o arquivo pai(App.js), crimaos um state: const [Pagina,setPagina]= useState(0), em seguida na linha 75 criamos um useEffect com  java script pra manipular o url em seguida uma função linkPagina com condicionais window,open e por ultimo um função retornarPagiana com condicionais e TAG button da linha 73:102 fazem parte da função nativa react de carregaamento de componete
+
+         45: Na aula 29 crimaos um Arquivo Tabela.js, com componete função. primeiro crimaso um const carros com varios {}objetos com categoria preço e nome do veículo, depois criamos um função tabelaCarro(cat) com um parametro categoria e com uma TABLE dentro dela, em seguida criamos um state categoria, criamos tambem uma função linhas(cat) com o parâmetro cat, dentro dela uma const LI=[] e depois ainda dentro dela um carros.forEach() pra percorrer o arrey carros.mais detalhes no arquvio filho Tabela.js
+
+         46: Na aula 30 criamos o arquivo filho Imc.js
+         nele criamos tabelas e funções pra retornar o IMC indice de massa corporal. os passo a passo da calculadora estão comentado no arquivo Imc.js
+
+         47: Na aula 31 faremos a calculadora imc novamente agora com os componentes separados em arquivos diferentes. Criamos os arquivos Ims2.js, Peso.js, Altura.js,Calcular.js e Resultado.js cada um com sua respectiva função com parametro props. pois usaremos os states no arquivo pai(App.js) . Declaramos os states na linha 114:116  os imports da linha 32:37 e da linha 211:215 retonamos os comoponete declarando seus respectivos props
+         
+         48: Na aula 32 convertemos os componetes externos usados pra criar a calculadora IMC( Ims2.js, Peso.js, Altura.js, CalcularIMC.js e ResultadoIMC.js) convertemos de componete função pra componete class de forma comentada. OBS: SEMPRE QUE O COMPONETE TIVER O STATE NO ARQUIVO PAI E FOR COMPONETE FUNÇÃO USAR O : PROPS.A OBS2:SEMPRE QUE FOR COMPONETE CLASS USAR O THIS.PROPS.A  OBS3: E SEMPRE QUE HOUER UMA FUNÇÃO NO COMPONENTE CLASS USAR O BIND PRA FUNDIR A FUNÇÃO!
      
      
      
